@@ -24,6 +24,21 @@ FROM ghcr.io/paperclipai/paperclip:sha-e55d702
 COPY railway-entrypoint.sh /usr/local/bin/railway-entrypoint.sh
 RUN chmod +x /usr/local/bin/railway-entrypoint.sh
 
+# Railway probes a service's healthcheck with `Host: healthcheck.railway.app`. Paperclip
+# ships PAPERCLIP_DEPLOYMENT_EXPOSURE=private, which enables privateHostnameGuard: every
+# request whose Host is outside the allow set is answered 403 — including that probe, so
+# the healthcheck never passes, the deploy never goes live, and the edge serves 404 while
+# the container logs `GET /api/health 403`. Measured on Railway 2026-07-31.
+#
+# The allow set is this list plus the hostname parsed out of PAPERCLIP_PUBLIC_URL, so the
+# deployer's own Railway domain still gets in without being named here. Baked as ENV
+# rather than shipped as a template variable to keep the deploy form empty (a literal
+# variable loses its default in templateGenerate and publishes as required-with-no-value).
+#
+# Deployers adding a custom domain override PAPERCLIP_ALLOWED_HOSTNAMES — keep
+# healthcheck.railway.app in the list when you do.
+ENV PAPERCLIP_ALLOWED_HOSTNAMES=healthcheck.railway.app
+
 EXPOSE 3100
 
 # Everything else the upstream image already sets stays untouched: HOST=0.0.0.0,
