@@ -1,5 +1,9 @@
 # paperclip-railway
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/paperclip-or-ai-agent-company-os-current?referralCode=Z1xivh&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+**Deploy on Railway:** [Paperclip template](https://railway.com/deploy/paperclip-or-ai-agent-company-os-current?referralCode=Z1xivh&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
 Railway-tuned [Paperclip](https://github.com/paperclipai/paperclip) image:
 `ghcr.io/bon5co/paperclip-railway`.
 
